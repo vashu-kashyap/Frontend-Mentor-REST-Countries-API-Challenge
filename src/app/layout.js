@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Nunito_Sans } from "next/font/google";
 import Header from "@/components/Header";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const nunitoSans = Nunito_Sans({
   subsets: ["latin"],
@@ -16,10 +17,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${nunitoSans.className} bg-very-light-gray dark:bg-very-dark-blue`}
+        className={`${nunitoSans.className} bg-very-light-gray dark:bg-very-dark-blue  `}
       >
-        <Header />
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

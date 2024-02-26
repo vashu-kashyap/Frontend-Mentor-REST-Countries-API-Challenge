@@ -1,49 +1,50 @@
-// Import the Card component
+"use client";
+import { useState, useEffect } from "react";
 import Card from "@/components/Card";
+import countryData from "./country";
+ 
 
-// Function to fetch data from the API
-async function getData() {
-  const res = await fetch("https://restcountries.com/v3.1/all");
+export default function Home() {
+  const [data, setData] = useState([]); // State to store fetched data
+  // Function to handle search query change
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
+  console.log(data)
 
-  return res.json();
-}
+  useEffect(() => {
+    // Fetch data from the API when the component mounts
+    const fetchData = async () => {
+      try {
+        const fetchedData = await countryData();
+        setData(fetchedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-// Default function for the Home page component
-export default async function Home() {
-  // Fetch data from the API
-  const data = await getData();
+    fetchData(); // Call fetchData function
+  }, []); // Empty dependency array ensures that useEffect runs only once
 
   return (
     // Main container
     <main className="mx-auto flex min-h-screen flex-col items-center justify-between p-24">
       {/* Card wrapper */}
-      <div className="card-wrapper grid space-y-8 lg:w-full lg:grid-cols-4 lg:gap-y-10 lg:space-y-0">
+      <div className="card-wrapper grid justify-items-center space-y-8 lg:w-full lg:grid-cols-4 lg:gap-14 lg:space-y-0 ">
         {/* Map through the data and render Card components */}
-        {data.map((item) => {
-          // Log the type of population
-          console.log(typeof item.population);
-
-          return (
-            // Card component
-            <Card
-              key={item.name.common} // Unique key for each Card
-              countryName={item.name.common} // Country name
-              population={
-                item.population === 0
-                  ? "No Population " // If population is 0, display "No Population"
-                  : item.population.toLocaleString() // Format population with commas
-              }
-              region={item.region} // Country region
-              capital={item.capital} // Country capital
-              flag={item.flags.svg} // Country flag
-              imgAlt={`${item.flags.alt}`} // Alt text for the flag image
-            />
-          );
-        })}
+        {data.map((item) => (
+          <Card
+            key={item.name.common}
+            countryName={item.name.common}
+            population={
+              item.population === 0
+                ? "No Population "
+                : item.population.toLocaleString()
+            }
+            region={item.region}
+            capital={item.capital}
+            flag={item.flags.svg}
+            imgAlt={`${item.flags.alt}`}
+          />
+        ))}
       </div>
     </main>
   );
