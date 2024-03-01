@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Card = ({ countryName, population, region, capital, flag, imgAlt }) => {
   return (
-    <div className="min-h-96 w-72 rounded-md bg-white dark:bg-dark-blue shadow-sm">
+    <div className="min-h-96 w-72 rounded-md bg-white dark:bg-dark-blue shadow-md ">
       <Image
         src={flag}
         className="h-[173px] w-full rounded-t-md object-cover"
